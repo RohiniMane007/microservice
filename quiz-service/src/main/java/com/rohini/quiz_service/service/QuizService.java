@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.rohini.quiz_service.feign.QuizInterface;
 import com.rohini.quiz_service.model.QuestionWrapper;
 import com.rohini.quiz_service.model.Quiz;
 import com.rohini.quiz_service.model.Response;
@@ -20,17 +22,19 @@ import lombok.RequiredArgsConstructor;
 public class QuizService {
 	
 	private final QuizRepository quizRepository;
-//	private final QuestionRepository questionRepository;
+	private final QuizInterface quizInterface;
 	
 	public ResponseEntity<String> createQuiz(String category, Integer numQ, String title) {
 		try {
 			
+			List<Integer> questions = quizInterface.getQuestionsForQuiz(category, numQ).getBody();
+			
 //			List<Question> questions = questionRepository.findRandomQuestionsByCategory(category, numQ);
 //			System.out.println(questions);
-//			Quiz quiz = new Quiz();
-//			quiz.setTitle(title);
-//			quiz.setQuestion(questions);
-//			quizRepository.save(quiz);
+			Quiz quiz = new Quiz();
+			quiz.setTitle(title);
+			quiz.setQuestionIds(questions);
+			quizRepository.save(quiz);
 			
 			return new ResponseEntity<>("success",HttpStatus.CREATED);
 			

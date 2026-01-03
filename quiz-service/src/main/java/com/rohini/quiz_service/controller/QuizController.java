@@ -22,11 +22,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class QuizController {
 	
-	final private QuizService quizService;
+	private final QuizService quizService;
 	
 	@PostMapping("create")
 	public ResponseEntity<String> createQuiz(@RequestBody QuizDto quizDto) {
-		return quizService.createQuiz(quizDto.getCategoryName(), quizDto.getNumQuestion(), quizDto.getTitle());
+		return quizService.createQuiz(quizDto.getCategoryName(), quizDto.getNumQuestions(), quizDto.getTitle());
 	}
 	
 	@GetMapping("get/{id}")
